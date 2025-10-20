@@ -1,0 +1,28 @@
+[gd_scene load_steps=3 format=3 uid="uid://dh8s7g84fofw7"]
+
+[ext_resource type="Script" uid="uid://dyixyhiw5x2ug" path="res://Scripts/spawner_pesci.gd" id="1_rek46"]
+
+[sub_resource type="GDScript" id="GDScript_8terc"]
+script/source = "extends Timer
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	pass
+"
+
+[node name="spawner_pesci" type="Node2D"]
+script = ExtResource("1_rek46")
+SpawnUnitesAmount = 1
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 2.0
+autostart = true
+script = SubResource("GDScript_8terc")
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

@@ -1,0 +1,62 @@
+[gd_scene load_steps=8 format=3 uid="uid://bgwyw6ap70v1w"]
+
+[ext_resource type="PackedScene" uid="uid://b0c04gjt1wuv6" path="res://Scenes/barca.tscn" id="1_ebmjs"]
+[ext_resource type="PackedScene" uid="uid://bdqfwxlgoh56w" path="res://Scenes/zona_acqua.tscn" id="2_qxrlw"]
+[ext_resource type="PackedScene" uid="uid://qb15gema81q" path="res://Scenes/gabbiano.tscn" id="3_wrm1d"]
+[ext_resource type="Script" uid="uid://bn3rs2jra7cm6" path="res://Scripts/area_2d.gd" id="4_wowpa"]
+[ext_resource type="PackedScene" uid="uid://dh8s7g84fofw7" path="res://Scenes/spawner_pesci.tscn" id="6_1l0tm"]
+[ext_resource type="PackedScene" uid="uid://cgc5cfca2642y" path="res://Scenes/pesce.tscn" id="6_i6g32"]
+
+[sub_resource type="GDScript" id="GDScript_i6g32"]
+script/source = "# Nello script del nodo principale (Mondo.gd)
+extends Node2D
+
+# Trascina i tuoi due personaggi qui dall'editor di Godot
+@onready var gabbiano: CharacterBody2D = $gabbiano
+
+
+
+
+# Una variabile per sapere chi stiamo controllando al momento
+var personaggio_attivo: CharacterBody2D
+
+func _ready():
+	# All'inizio del gioco, decidiamo chi parte come attivo
+	# Diamo il controllo al personaggio 1
+
+	# Potresti voler muovere la camera sul personaggio attivo
+	# $Camera2D.target_node = personaggio_attivo (se la camera è figlia di Mondo)
+	pass
+
+
+func _on_zona_acqua_area_entered(area: Area2D) -> void:
+	print(\"Miao\")
+"
+
+[node name="Game" type="Node2D"]
+script = SubResource("GDScript_i6g32")
+
+[node name="Barca" parent="." instance=ExtResource("1_ebmjs")]
+position = Vector2(469, 60)
+mass = 0.66
+
+[node name="Zona_acqua" parent="." instance=ExtResource("2_qxrlw")]
+position = Vector2(0, 56)
+script = ExtResource("4_wowpa")
+
+[node name="gabbiano" parent="." groups=["Gabbiano"] instance=ExtResource("3_wrm1d")]
+position = Vector2(160, -282)
+
+[node name="Camera2D" type="Camera2D" parent="gabbiano"]
+position = Vector2(1, 2)
+zoom = Vector2(0.5, 0.5)
+
+[node name="pesce" parent="." groups=["pesci"] instance=ExtResource("6_i6g32")]
+position = Vector2(-4246, 1829)
+
+[node name="spawner_pesci" parent="." instance=ExtResource("6_1l0tm")]
+position = Vector2(0, 378)
+
+[connection signal="body_entered" from="Zona_acqua" to="Barca" method="_on_zona_acqua_body_entered"]
+[connection signal="body_entered" from="Zona_acqua" to="gabbiano" method="_on_zona_acqua_body_entered"]
+[connection signal="body_exited" from="Zona_acqua" to="gabbiano" method="_on_zona_acqua_body_exited"]

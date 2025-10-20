@@ -1,0 +1,171 @@
+[gd_scene load_steps=20 format=3 uid="uid://qb15gema81q"]
+
+[ext_resource type="Script" uid="uid://cvf83v80ux8et" path="res://Scripts/gabbiano.gd" id="1_7dw06"]
+[ext_resource type="Texture2D" uid="uid://2vcss58qk416" path="res://Assets/images/Spreadsheet gabbiano.png" id="2_cnhjg"]
+[ext_resource type="Texture2D" uid="uid://dmpgy2tkcxjxn" path="res://Assets/images/Spreadsheet gabbiano v2.png" id="2_lbfth"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o68jw"]
+atlas = ExtResource("2_lbfth")
+region = Rect2(1924, 814, 476, 265)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ju7ve"]
+atlas = ExtResource("2_lbfth")
+region = Rect2(1924, 272, 476, 265)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lbfth"]
+atlas = ExtResource("2_cnhjg")
+region = Rect2(964, 816, 471, 261)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3ngxi"]
+atlas = ExtResource("2_cnhjg")
+region = Rect2(1446, 816, 471, 261)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sqwn3"]
+atlas = ExtResource("2_cnhjg")
+region = Rect2(964, 272, 471, 261)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_020jv"]
+atlas = ExtResource("2_cnhjg")
+region = Rect2(1446, 272, 471, 261)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a16n5"]
+atlas = ExtResource("2_cnhjg")
+region = Rect2(485, 680, 471, 263)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qhikw"]
+atlas = ExtResource("2_cnhjg")
+region = Rect2(485, 140, 471, 263)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_de43a"]
+atlas = ExtResource("2_lbfth")
+region = Rect2(1924, 0, 477, 267)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e2liv"]
+atlas = ExtResource("2_lbfth")
+region = Rect2(1924, 543, 476, 265)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mmrer"]
+atlas = ExtResource("2_cnhjg")
+region = Rect2(964, 544, 471, 261)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_khjeb"]
+atlas = ExtResource("2_cnhjg")
+region = Rect2(1446, 544, 471, 261)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2hwqd"]
+atlas = ExtResource("2_cnhjg")
+region = Rect2(964, 0, 471, 261)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ca7t7"]
+atlas = ExtResource("2_cnhjg")
+region = Rect2(1446, 0, 471, 261)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_o68jw"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o68jw")
+}],
+"loop": true,
+"name": &"down (left side)",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ju7ve")
+}],
+"loop": true,
+"name": &"down (right side)",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lbfth")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3ngxi")
+}],
+"loop": false,
+"name": &"down-left",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sqwn3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_020jv")
+}],
+"loop": false,
+"name": &"down-right",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a16n5")
+}],
+"loop": true,
+"name": &"left",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qhikw")
+}],
+"loop": true,
+"name": &"right",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_de43a")
+}],
+"loop": true,
+"name": &"up (left side)",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_e2liv")
+}],
+"loop": true,
+"name": &"up (right side)",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mmrer")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_khjeb")
+}],
+"loop": false,
+"name": &"up-left",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2hwqd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ca7t7")
+}],
+"loop": false,
+"name": &"up-right",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7dw06"]
+size = Vector2(261, 143.625)
+
+[node name="gabbiano" type="CharacterBody2D"]
+script = ExtResource("1_7dw06")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 3
+sprite_frames = SubResource("SpriteFrames_o68jw")
+animation = &"down (right side)"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-26, -7)
+shape = SubResource("RectangleShape2D_7dw06")

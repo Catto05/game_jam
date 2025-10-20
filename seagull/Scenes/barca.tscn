@@ -1,0 +1,41 @@
+[gd_scene load_steps=6 format=3 uid="uid://b0c04gjt1wuv6"]
+
+[ext_resource type="Script" uid="uid://b2tqie2g64l4d" path="res://Scripts/barca.gd" id="1_ep71b"]
+[ext_resource type="Texture2D" uid="uid://cf6f6jmju26lb" path="res://Assets/left.png" id="2_pwflj"]
+[ext_resource type="Texture2D" uid="uid://heq1lw6xjhbl" path="res://Assets/right.png" id="3_3vv53"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_pwflj"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_b6rs5"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_pwflj")
+}],
+"loop": true,
+"name": &"left",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_3vv53")
+}],
+"loop": true,
+"name": &"right",
+"speed": 5.0
+}]
+
+[node name="barca" type="RigidBody2D"]
+physics_material_override = SubResource("PhysicsMaterial_pwflj")
+script = ExtResource("1_ep71b")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+visible = false
+position = Vector2(862, -381)
+scale = Vector2(1.0039909, 1.006878)
+polygon = PackedVector2Array(-552, 372, 478, 372, 787, 3, 497, 5, 502, -225, 545, -228, 540, -288, 467, -436, 383, -436, 357, -271, 114, -234, 110, 0, -675, 33, -672, -464, -836, -415, -887, -326, -920, -92, -920, 13)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(848, -380)
+sprite_frames = SubResource("SpriteFrames_b6rs5")
+animation = &"right"
