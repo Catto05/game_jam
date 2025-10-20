@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://cb2ddxf5v08tt"]
+
+[ext_resource type="PackedScene" uid="uid://cgc5cfca2642y" path="res://Scenes/pesce.tscn" id="1_mcm3q"]
+
+[node name="golden_fish" instance=ExtResource("1_mcm3q")]
+
+[node name="AnimatedSprite2D" parent="." index="0"]
+animation = &"golden"
+autoplay = "golden"

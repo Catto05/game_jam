@@ -1,16 +1,55 @@
-[gd_scene load_steps=7 format=3 uid="uid://cgc5cfca2642y"]
+[gd_scene load_steps=16 format=3 uid="uid://cgc5cfca2642y"]
 
 [ext_resource type="Texture2D" uid="uid://dtep0m05i34b2" path="res://Assets/images/Spritesheet_Pesce.png" id="1_0sfw5"]
+[ext_resource type="Texture2D" uid="uid://bq6u2ovn3850x" path="res://Assets/images/Spritesheet Pese_2_golden.png" id="3_qea8m"]
+[ext_resource type="Texture2D" uid="uid://dovynlenfi248" path="res://Assets/images/Spritesheet Pese_2_silver.png" id="4_ipann"]
 
 [sub_resource type="GDScript" id="GDScript_0sfw5"]
-script/source = "extends  CharacterBody2D
+script/source = "# Fish.gd
+extends Node2D
 
-const SPEED = 400.0
-var direction_x := Vector2.RIGHT
-func _physics_process(delta: float) -> void:
-	velocity.x = direction_x[0] * SPEED
-	move_and_slide()
+## --- Proprietà Configurabili ---
+# !!! MODIFICA: Invece di una Texture, ora esportiamo una risorsa SpriteFrames
+@export var animation_frames: SpriteFrames 
+
+@export_group(\"Comportamento\")
+@export var speed: float = 100.0
+@export var frequency: float = 2.0
+@export var amplitude: float = 50.0
+# Aggiungiamo il nome dell'animazione da riprodurre
+@export var default_animation: StringName = &\"swim\"
+
+@export_group(\"Spawning\")
+@export var spawn_weight: float = 1.0 
+
+## --- Nodi Figli ---
+# !!! MODIFICA: Puntiamo al nuovo nodo AnimatedSprite2D
+@onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
+
+# Variabili interne per il movimento
+var time_passed: float = 0.0
+var initial_y_position: float
+
+func _ready():
+	# !!! MODIFICA: Assegniamo la risorsa e avviamo l'animazione
+	if animation_frames:
+		animated_sprite.sprite_frames = animation_frames
+		animated_sprite.play(default_animation)
+	else:
+		print(\"ATTENZIONE: Nessuna risorsa SpriteFrames assegnata a questo pesce!\")
+		
+	initial_y_position = global_position.y
+
+func _process(delta: float):
+	# Il codice per il movimento rimane IDENTICO!
+	time_passed += delta
+	var new_position = global_position
+	new_position.x += speed * delta
+	new_position.y = initial_y_position + sin(time_passed * frequency) * amplitude
+	global_position = new_position
 "
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ejh31"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_kafma"]
 atlas = ExtResource("1_0sfw5")
@@ -24,8 +63,37 @@ region = Rect2(1443, 0, 955, 537)
 atlas = ExtResource("1_0sfw5")
 region = Rect2(2403, 0, 955, 537)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_bvsxt"]
+atlas = ExtResource("3_qea8m")
+region = Rect2(485, 4, 949, 529)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nngga"]
+atlas = ExtResource("3_qea8m")
+region = Rect2(1447, 4, 949, 529)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5866a"]
+atlas = ExtResource("3_qea8m")
+region = Rect2(2409, 4, 949, 529)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wjvd5"]
+atlas = ExtResource("4_ipann")
+region = Rect2(485, 4, 949, 529)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5xn6d"]
+atlas = ExtResource("4_ipann")
+region = Rect2(1447, 4, 949, 529)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1stdj"]
+atlas = ExtResource("4_ipann")
+region = Rect2(2409, 4, 949, 529)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_ipann"]
 animations = [{
+"frames": [],
+"loop": true,
+"name": &"blue",
+"speed": 5.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_kafma")
@@ -37,19 +105,47 @@ animations = [{
 "texture": SubResource("AtlasTexture_qea8m")
 }],
 "loop": true,
-"name": &"right",
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bvsxt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nngga")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5866a")
+}],
+"loop": true,
+"name": &"golden",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wjvd5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5xn6d")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1stdj")
+}],
+"loop": true,
+"name": &"silver",
 "speed": 5.0
 }]
 
 [node name="pesce" type="CharacterBody2D"]
 scale = Vector2(0.2, 0.2)
 script = SubResource("GDScript_0sfw5")
+animation_frames = SubResource("SpriteFrames_ejh31")
+speed = 200.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_ipann")
-animation = &"right"
-autoplay = "right"
-frame_progress = 0.8499964
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+visible = false
 polygon = PackedVector2Array(151, 216, 152, 165, 172, 164, 297, 128, 345, 95, 400, 38, 401, 7, 346, -54, 297, -88, 194, -134, 166, -145, 144, -225, 96, -249, 53, -232, -37, -185, 5, -140, -13, -137, -37, -126, -90, -185, -113, -182, -194, -99, -164, -61, -175, -54, -201, -39, -226, -41, -302, -110, -396, -100, -385, 1, -399, 113, -331, 140, -224, 69, -195, 72, -161, 88, -165, 126, -149, 173, -126, 198, -83, 203, -53, 185, -39, 152, -23, 161, 85, 174, 104, 175, 91, 225, 117, 233)

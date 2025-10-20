@@ -7,7 +7,8 @@ extends Node2D
 
 func _on_timer_timeout() -> void:
 	var fish = fish_var.instantiate()
-	fish.position = position
+	fish.position.x = position.x
+	fish.position.y = randi_range(0,8000)
 	get_parent().get_node("spawner_pesci").add_child(fish)
 	fish.add_to_group("pesci")
 
