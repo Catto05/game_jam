@@ -1,55 +1,69 @@
-[gd_scene load_steps=16 format=3 uid="uid://cgc5cfca2642y"]
+[gd_scene load_steps=19 format=3 uid="uid://cgc5cfca2642y"]
 
 [ext_resource type="Texture2D" uid="uid://dtep0m05i34b2" path="res://Assets/images/Spritesheet_Pesce.png" id="1_0sfw5"]
+[ext_resource type="Texture2D" uid="uid://bvda24gfakq7j" path="res://Assets/images/Spritesheet Pese_2_blue.png" id="1_qea8m"]
 [ext_resource type="Texture2D" uid="uid://bq6u2ovn3850x" path="res://Assets/images/Spritesheet Pese_2_golden.png" id="3_qea8m"]
 [ext_resource type="Texture2D" uid="uid://dovynlenfi248" path="res://Assets/images/Spritesheet Pese_2_silver.png" id="4_ipann"]
 
 [sub_resource type="GDScript" id="GDScript_0sfw5"]
 script/source = "# Fish.gd
-extends Node2D
+extends CharacterBody2D
 
-## --- Proprietà Configurabili ---
-# !!! MODIFICA: Invece di una Texture, ora esportiamo una risorsa SpriteFrames
-@export var animation_frames: SpriteFrames 
-
-@export_group(\"Comportamento\")
+# --- (Le tue variabili @export rimangono identiche) ---
+@export var fish_animation_name: StringName = &\"default_fish\"
 @export var speed: float = 100.0
 @export var frequency: float = 2.0
 @export var amplitude: float = 50.0
-# Aggiungiamo il nome dell'animazione da riprodurre
-@export var default_animation: StringName = &\"swim\"
-
-@export_group(\"Spawning\")
 @export var spawn_weight: float = 1.0 
 
-## --- Nodi Figli ---
-# !!! MODIFICA: Puntiamo al nuovo nodo AnimatedSprite2D
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 
-# Variabili interne per il movimento
-var time_passed: float = 0.0
+# !!! MODIFICA: Spostiamo initial_y_position qui fuori
 var initial_y_position: float
+var time_passed: float = 0.0
+
+# !!! MODIFICA: Aggiungiamo una flag per l'inizializzazione
+var is_initialized: bool = false
+var is_eaten: bool = false # Il pesce inizia vivo!
 
 func _ready():
-	# !!! MODIFICA: Assegniamo la risorsa e avviamo l'animazione
-	if animation_frames:
-		animated_sprite.sprite_frames = animation_frames
-		animated_sprite.play(default_animation)
-	else:
-		print(\"ATTENZIONE: Nessuna risorsa SpriteFrames assegnata a questo pesce!\")
-		
-	initial_y_position = global_position.y
+	# In _ready() facciamo solo partire l'animazione,
+	# perché questo non dipende dalla posizione.
+	animated_sprite.play(fish_animation_name)
 
-func _process(delta: float):
-	# Il codice per il movimento rimane IDENTICO!
+func _physics_process(delta: float):
+	# !!! MODIFICA: Eseguiamo questo blocco SOLO la prima volta
+	if not is_initialized:
+		# Ora global_position è quella corretta, impostata dallo spawner!
+		initial_y_position = global_position.y
+		is_initialized = true # Impediamo che questo codice si ripeta
+
+	# Il resto del codice per il movimento rimane identico
 	time_passed += delta
-	var new_position = global_position
-	new_position.x += speed * delta
-	new_position.y = initial_y_position + sin(time_passed * frequency) * amplitude
-	global_position = new_position
+	
+	var vertical_offset = sin(time_passed * frequency) * amplitude
+	var target_y = initial_y_position + vertical_offset
+	
+	var horizontal_velocity = Vector2.RIGHT * speed
+	var vertical_velocity = Vector2(0, (target_y - global_position.y) / delta)
+	
+	velocity = horizontal_velocity + vertical_velocity
+	if global_position.x < -9000 or global_position.x > 9000:
+		queue_free()
+	move_and_slide()
 "
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_ejh31"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_ipann"]
+atlas = ExtResource("1_qea8m")
+region = Rect2(485, 10, 947, 526)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_us4qr"]
+atlas = ExtResource("1_qea8m")
+region = Rect2(1449, 10, 947, 526)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eemjf"]
+atlas = ExtResource("1_qea8m")
+region = Rect2(2413, 10, 947, 526)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_kafma"]
 atlas = ExtResource("1_0sfw5")
@@ -89,7 +103,16 @@ region = Rect2(2409, 4, 949, 529)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_ipann"]
 animations = [{
-"frames": [],
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ipann")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_us4qr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eemjf")
+}],
 "loop": true,
 "name": &"blue",
 "speed": 5.0
@@ -140,11 +163,11 @@ animations = [{
 [node name="pesce" type="CharacterBody2D"]
 scale = Vector2(0.2, 0.2)
 script = SubResource("GDScript_0sfw5")
-animation_frames = SubResource("SpriteFrames_ejh31")
 speed = 200.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_ipann")
+animation = &"blue"
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
 visible = false

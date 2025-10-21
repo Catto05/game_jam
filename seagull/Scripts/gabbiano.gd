@@ -68,15 +68,21 @@ func _physics_process(delta: float) -> void:
 		elif last_directions.x == -1 and last_directions.y == -1:
 			animated_sprite_2d.play("up-left")
 			
-			
 	move_and_slide()
 	for i in get_slide_collision_count():
 		var collision = get_slide_collision(i)
 		var corpo_toccato = collision.get_collider()
-	
+
+		# Controlliamo che il corpo esista e sia un pesce
 		if corpo_toccato and corpo_toccato.is_in_group("pesci"):
-			print("Ho urtato il giocatore : ", corpo_toccato.name)
-			corpo_toccato.queue_free()
+			
+			# ==> LA CONDIZIONE CHIAVE: il pesce non è già stato mangiato?
+			if not corpo_toccato.is_eaten:
+				# Alziamo la "bandierina" per non colpirlo più
+				corpo_toccato.is_eaten = true 
+				
+				print("Ho mangiato il pesce: ", corpo_toccato.name)
+				corpo_toccato.queue_free()
 	
 			
 

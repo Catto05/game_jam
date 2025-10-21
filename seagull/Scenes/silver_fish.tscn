@@ -2,7 +2,10 @@
 
 [ext_resource type="PackedScene" uid="uid://cgc5cfca2642y" path="res://Scenes/pesce.tscn" id="1_lg5wv"]
 
-[node name="silver_fish" instance=ExtResource("1_lg5wv")]
+[node name="silver_fish" groups=["pesci"] instance=ExtResource("1_lg5wv")]
+fish_animation_name = &"silver"
+speed = 450.0
+amplitude = 70.0
 
 [node name="AnimatedSprite2D" parent="." index="0"]
 animation = &"silver"

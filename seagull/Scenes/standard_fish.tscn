@@ -1,11 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://cb6bta7q3duh3"]
+[gd_scene load_steps=2 format=3 uid="uid://cb6bta7q3duh3"]
 
 [ext_resource type="PackedScene" uid="uid://cgc5cfca2642y" path="res://Scenes/pesce.tscn" id="1_fpy4e"]
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_fpy4e"]
-
-[node name="standard" instance=ExtResource("1_fpy4e")]
-animation_frames = SubResource("SpriteFrames_fpy4e")
+[node name="standard" groups=["pesci"] instance=ExtResource("1_fpy4e")]
+fish_animation_name = &"default"
 
 [node name="AnimatedSprite2D" parent="." index="0"]
 autoplay = "default"

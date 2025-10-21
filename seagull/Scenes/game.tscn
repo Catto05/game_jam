@@ -46,12 +46,17 @@ script = ExtResource("4_wowpa")
 [node name="gabbiano" parent="." groups=["Gabbiano"] instance=ExtResource("3_wrm1d")]
 position = Vector2(160, -282)
 
-[node name="spawner_pesci" parent="." instance=ExtResource("6_1l0tm")]
-position = Vector2(0, 378)
+[node name="Camera2D" type="Camera2D" parent="gabbiano"]
+position = Vector2(2, 5)
+zoom = Vector2(0.15, 0.15)
+limit_left = -9617
+limit_top = -900
+limit_right = 9521
+limit_bottom = 8002
 
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(120, 3546)
-zoom = Vector2(0.1, 0.1)
+[node name="spawner_pesci" parent="." instance=ExtResource("6_1l0tm")]
+position = Vector2(-142, 5462)
+shallow_depth_threshold = 2500.0
 
 [connection signal="body_entered" from="Zona_acqua" to="Barca" method="_on_zona_acqua_body_entered"]
 [connection signal="body_entered" from="Zona_acqua" to="gabbiano" method="_on_zona_acqua_body_entered"]

@@ -15,7 +15,7 @@ shader_parameter/wave_amplitude = 0.02
 [node name="Zona_acqua" type="Area2D"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(11, 3963)
+position = Vector2(-50, 3950)
 shape = SubResource("RectangleShape2D_sbm0e")
 
 [node name="ColorRect" type="ColorRect" parent="."]
