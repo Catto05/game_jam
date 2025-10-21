@@ -163,9 +163,20 @@ script = ExtResource("1_7dw06")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 3
+scale = Vector2(1.5478926, 1.5478927)
 sprite_frames = SubResource("SpriteFrames_o68jw")
-animation = &"down (right side)"
+animation = &"down-right"
+frame = 1
+frame_progress = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-26, -7)
 shape = SubResource("RectangleShape2D_7dw06")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(3, 5)
+zoom = Vector2(0.35, 0.35)
+limit_left = -9617
+limit_top = -1450
+limit_right = 9521
+limit_bottom = 8002

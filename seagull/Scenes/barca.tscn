@@ -27,15 +27,16 @@ animations = [{
 
 [node name="barca" type="RigidBody2D"]
 physics_material_override = SubResource("PhysicsMaterial_pwflj")
+lock_rotation = true
 script = ExtResource("1_ep71b")
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
-visible = false
-position = Vector2(862, -381)
-scale = Vector2(1.0039909, 1.006878)
-polygon = PackedVector2Array(-552, 372, 478, 372, 787, 3, 497, 5, 502, -225, 545, -228, 540, -288, 467, -436, 383, -436, 357, -271, 114, -234, 110, 0, -675, 33, -672, -464, -836, -415, -887, -326, -920, -92, -920, 13)
+position = Vector2(36, -507.1643)
+scale = Vector2(1.3583772, 1.315042)
+polygon = PackedVector2Array(-544.276, 387.06598, 492.99115, 396.9516, 814.69855, -4.5565186, 497, 5, 502, -225, 545, -228, 540, -288, 495.93585, -460.05527, 380.35675, -456.25314, 357, -271, 114, -234, 110, 0, -675, 33, -672, -464, -836, -415, -887, -326, -920, -92, -920, 13)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(848, -380)
+position = Vector2(34.000122, -517.1643)
+scale = Vector2(1.3907408, 1.3907408)
 sprite_frames = SubResource("SpriteFrames_b6rs5")
 animation = &"right"

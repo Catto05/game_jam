@@ -15,7 +15,26 @@ run/main_scene="uid://bgwyw6ap70v1w"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
 
+[display]
+
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+window/stretch/mode="canvas_items"
+
 [global_group]
 
 Gabbiano=""
 pesci=""
+
+[physics]
+
+2d/stretch/mode="canvas_items"
+2d/canvas_textures/default_texture_filter=0
+2d/stretch/scale_mode="fractional"
+2d/stretch/scale=1.0
+2d/size/viewport_height=1080
+2d/size/viewport_width=1920
+
+[rendering]
+
+textures/canvas_textures/default_texture_filter=0

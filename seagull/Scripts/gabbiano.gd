@@ -2,7 +2,9 @@ extends CharacterBody2D
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 @onready var zona_acqua: Area2D = $"../Zona_acqua"
 @onready var gabbiano: CharacterBody2D = $"."
-
+@onready var freccia: Sprite2D = $Freccia
+@onready var camera_2d: Camera2D = $Camera2D
+@export var barca : Node2D = null
 
 
 
@@ -54,11 +56,11 @@ func _physics_process(delta: float) -> void:
 			
 	else:
 		if is_in_water == false:
-			velocity.x = move_toward(velocity.x, get_gravity().x, SPEED)
-			velocity.y = move_toward(velocity.y, get_gravity().y, SPEED)
+			velocity.x = move_toward(velocity.x, get_gravity().x, SPEED * delta)
+			velocity.y = move_toward(velocity.y, get_gravity().y, SPEED * delta)
 		else:
-			velocity.x = move_toward(velocity.x, 0, SPEED)
-			velocity.y = move_toward(velocity.y, 0, SPEED)
+			velocity.x = move_toward(velocity.x, 0, SPEED * delta)
+			velocity.y = move_toward(velocity.y, 0, SPEED * delta)
 		
 	# Handle jump.
 	if Input.is_action_just_pressed("ui_accept"):
@@ -68,7 +70,8 @@ func _physics_process(delta: float) -> void:
 		elif last_directions.x == -1 and last_directions.y == -1:
 			animated_sprite_2d.play("up-left")
 			
-	move_and_slide()
+	
+	
 	for i in get_slide_collision_count():
 		var collision = get_slide_collision(i)
 		var corpo_toccato = collision.get_collider()
@@ -83,13 +86,9 @@ func _physics_process(delta: float) -> void:
 				
 				print("Ho mangiato il pesce: ", corpo_toccato.name)
 				corpo_toccato.queue_free()
+				
+	move_and_slide()
 	
-			
-
-	
-	
-
-
 func _on_zona_acqua_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Gabbiano"):
 		is_in_water = true

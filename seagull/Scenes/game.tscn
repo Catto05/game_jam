@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://b0c04gjt1wuv6" path="res://Scenes/barca.tscn" id="1_ebmjs"]
 [ext_resource type="PackedScene" uid="uid://bdqfwxlgoh56w" path="res://Scenes/zona_acqua.tscn" id="2_qxrlw"]
 [ext_resource type="PackedScene" uid="uid://qb15gema81q" path="res://Scenes/gabbiano.tscn" id="3_wrm1d"]
-[ext_resource type="Script" uid="uid://bn3rs2jra7cm6" path="res://Scripts/area_2d.gd" id="4_wowpa"]
+[ext_resource type="PackedScene" uid="uid://dqsf7ahib18cp" path="res://Scenes/indicatore_barca.tscn" id="5_i6g32"]
 [ext_resource type="PackedScene" uid="uid://dh8s7g84fofw7" path="res://Scenes/spawner_pesci.tscn" id="6_1l0tm"]
 
 [sub_resource type="GDScript" id="GDScript_i6g32"]
@@ -12,9 +12,8 @@ extends Node2D
 
 # Trascina i tuoi due personaggi qui dall'editor di Godot
 @onready var gabbiano: CharacterBody2D = $gabbiano
-
-
-
+@onready var gradiente_acqua: GradientTexture1D = preload(\"res://Assets/new_gradient_texture_1d.tres\")
+@onready var zona_acqua: Area2D = $Zona_acqua
 
 # Una variabile per sapere chi stiamo controllando al momento
 var personaggio_attivo: CharacterBody2D
@@ -27,6 +26,13 @@ func _ready():
 	# $Camera2D.target_node = personaggio_attivo (se la camera è figlia di Mondo)
 	pass
 
+func _physics_process(delta: float) -> void:
+	if gabbiano.is_in_water:
+		var offset:float = - zona_acqua.global_position.y + gabbiano.global_position.y
+		offset = offset/ zona_acqua.color_rect.size.y
+		var color = gradiente_acqua.gradient.sample(offset)
+		((zona_acqua.color_rect as ColorRect).material as ShaderMaterial).set_shader_parameter(\"water_color\", color)
+		
 
 func _on_zona_acqua_area_entered(area: Area2D) -> void:
 	print(\"Miao\")
@@ -36,27 +42,38 @@ func _on_zona_acqua_area_entered(area: Area2D) -> void:
 script = SubResource("GDScript_i6g32")
 
 [node name="Barca" parent="." instance=ExtResource("1_ebmjs")]
-position = Vector2(469, 60)
+position = Vector2(468, 60)
 mass = 0.66
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="Barca"]
+position = Vector2(-1203, -1104)
+rect = Rect2(-10.68, -10, 2366.63, 1119.18)
 
 [node name="Zona_acqua" parent="." instance=ExtResource("2_qxrlw")]
 position = Vector2(0, 56)
-script = ExtResource("4_wowpa")
 
-[node name="gabbiano" parent="." groups=["Gabbiano"] instance=ExtResource("3_wrm1d")]
-position = Vector2(160, -282)
-
-[node name="Camera2D" type="Camera2D" parent="gabbiano"]
-position = Vector2(2, 5)
-zoom = Vector2(0.15, 0.15)
-limit_left = -9617
-limit_top = -900
-limit_right = 9521
-limit_bottom = 8002
+[node name="gabbiano" parent="." node_paths=PackedStringArray("barca") groups=["Gabbiano"] instance=ExtResource("3_wrm1d")]
+position = Vector2(-1869, -1115)
+barca = NodePath("../Barca")
 
 [node name="spawner_pesci" parent="." instance=ExtResource("6_1l0tm")]
 position = Vector2(-142, 5462)
 shallow_depth_threshold = 2500.0
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+position = Vector2(0, -1)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D"]
+position = Vector2(0, 1)
+build_mode = 1
+polygon = PackedVector2Array(-9602, 8005.78, 9546, 8005.78, 9546, -1461, -9602, -1461)
+
+[node name="Camera2D" type="Camera2D" parent="StaticBody2D"]
+
+[node name="Freccia" parent="." node_paths=PackedStringArray("target") instance=ExtResource("5_i6g32")]
+position = Vector2(0, -1)
+target = NodePath("../Barca")
+margin = 60.0
 
 [connection signal="body_entered" from="Zona_acqua" to="Barca" method="_on_zona_acqua_body_entered"]
 [connection signal="body_entered" from="Zona_acqua" to="gabbiano" method="_on_zona_acqua_body_entered"]

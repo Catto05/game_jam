@@ -166,6 +166,7 @@ script = SubResource("GDScript_0sfw5")
 speed = 200.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(1.7110267, 1.7110265)
 sprite_frames = SubResource("SpriteFrames_ipann")
 animation = &"blue"
 

@@ -1,5 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://bdqfwxlgoh56w"]
+[gd_scene load_steps=5 format=3 uid="uid://bdqfwxlgoh56w"]
 
+[ext_resource type="Script" uid="uid://bcclbvr161wsp" path="res://Scripts/zona_acqua.gd" id="1_8subu"]
 [ext_resource type="Shader" uid="uid://cq5g225sqiccj" path="res://Scripts/mare.gdshader" id="1_81842"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sbm0e"]
@@ -12,7 +13,9 @@ shader_parameter/wave_speed = 0.5
 shader_parameter/wave_frequency = 10.0
 shader_parameter/wave_amplitude = 0.02
 
-[node name="Zona_acqua" type="Area2D"]
+[node name="Zona_acqua" type="Area2D" node_paths=PackedStringArray("color_rect")]
+script = ExtResource("1_8subu")
+color_rect = NodePath("ColorRect")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-50, 3950)
@@ -23,5 +26,3 @@ material = SubResource("ShaderMaterial_jb3vm")
 offset_left = -9617.0
 offset_right = 9521.0
 offset_bottom = 7946.0
-
-[node name="Sprite2D" type="Sprite2D" parent="."]

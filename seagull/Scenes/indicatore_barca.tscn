@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://dqsf7ahib18cp"]
+
+[ext_resource type="Script" uid="uid://dw01nfcqpoy36" path="res://Scripts/indicatore_barca.gd" id="1_aevyc"]
+[ext_resource type="Texture2D" uid="uid://bexxxb8kvnsg3" path="res://Assets/images/Left-Arrow-PNG-Image.png" id="1_r0tt1"]
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_aevyc")
+
+[node name="Freccia" type="Sprite2D" parent="."]
+rotation = 3.1415927
+scale = Vector2(0.419, 0.198)
+texture = ExtResource("1_r0tt1")
+offset = Vector2(-800, 0)
