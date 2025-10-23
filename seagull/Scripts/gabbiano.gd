@@ -84,10 +84,12 @@ func _physics_process(delta: float) -> void:
 				# Alziamo la "bandierina" per non colpirlo più
 				corpo_toccato.is_eaten = true 
 				print("Ho mangiato il pesce: ", corpo_toccato.name)
+				print("")
 				ScoreManager.total_score += corpo_toccato.score
 				corpo_toccato.queue_free()
 				
 	move_and_slide()
+	
 	
 func _on_zona_acqua_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Gabbiano"):
