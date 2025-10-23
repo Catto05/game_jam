@@ -1,8 +1,9 @@
-[gd_scene load_steps=20 format=3 uid="uid://qb15gema81q"]
+[gd_scene load_steps=22 format=3 uid="uid://qb15gema81q"]
 
 [ext_resource type="Script" uid="uid://cvf83v80ux8et" path="res://Scripts/gabbiano.gd" id="1_7dw06"]
 [ext_resource type="Texture2D" uid="uid://2vcss58qk416" path="res://Assets/images/Spreadsheet gabbiano.png" id="2_cnhjg"]
 [ext_resource type="Texture2D" uid="uid://dmpgy2tkcxjxn" path="res://Assets/images/Spreadsheet gabbiano v2.png" id="2_lbfth"]
+[ext_resource type="Script" uid="uid://pd2qtvm02l7y" path="res://Scripts/text.gd" id="4_3ngxi"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_o68jw"]
 atlas = ExtResource("2_lbfth")
@@ -158,6 +159,9 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7dw06"]
 size = Vector2(261, 143.625)
 
+[sub_resource type="LabelSettings" id="LabelSettings_lbfth"]
+font_size = 111
+
 [node name="gabbiano" type="CharacterBody2D"]
 script = ExtResource("1_7dw06")
 
@@ -180,3 +184,17 @@ limit_left = -9617
 limit_top = -1450
 limit_right = 9521
 limit_bottom = 8002
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+script = ExtResource("4_3ngxi")
+
+[node name="Label" type="Label" parent="CanvasLayer"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -237.0
+offset_right = 237.0
+offset_bottom = 152.0
+grow_horizontal = 2
+text = "SCORE: 0"
+label_settings = SubResource("LabelSettings_lbfth")

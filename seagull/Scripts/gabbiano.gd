@@ -2,7 +2,6 @@ extends CharacterBody2D
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 @onready var zona_acqua: Area2D = $"../Zona_acqua"
 @onready var gabbiano: CharacterBody2D = $"."
-@onready var freccia: Sprite2D = $Freccia
 @onready var camera_2d: Camera2D = $Camera2D
 @export var barca : Node2D = null
 
@@ -15,6 +14,7 @@ var is_player_controlled
 var last_direction_y
 var last_directions = Vector2()
 var is_in_water = false	
+
 func _physics_process(delta: float) -> void:
 		
 	# Get the input direction and handle the movement/deceleration.
@@ -83,8 +83,8 @@ func _physics_process(delta: float) -> void:
 			if not corpo_toccato.is_eaten:
 				# Alziamo la "bandierina" per non colpirlo più
 				corpo_toccato.is_eaten = true 
-				
 				print("Ho mangiato il pesce: ", corpo_toccato.name)
+				ScoreManager.total_score += corpo_toccato.score
 				corpo_toccato.queue_free()
 				
 	move_and_slide()

@@ -6,6 +6,7 @@
 fish_animation_name = &"silver"
 speed = 450.0
 amplitude = 70.0
+score = 30.0
 
 [node name="AnimatedSprite2D" parent="." index="0"]
 animation = &"silver"

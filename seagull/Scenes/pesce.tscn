@@ -15,6 +15,8 @@ extends CharacterBody2D
 @export var frequency: float = 2.0
 @export var amplitude: float = 50.0
 @export var spawn_weight: float = 1.0 
+@export var score: float 
+#@onready var confini_mondo: StaticBody2D = $confini_mondo
 
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 
@@ -48,8 +50,17 @@ func _physics_process(delta: float):
 	var vertical_velocity = Vector2(0, (target_y - global_position.y) / delta)
 	
 	velocity = horizontal_velocity + vertical_velocity
-	if global_position.x < -9000 or global_position.x > 9000:
-		queue_free()
+	
+	if get_slide_collision_count() > 0:
+		# Se sì, esamina la prima collisione
+		var collision = get_slide_collision(0)
+		var corpo_toccato = collision.get_collider()
+		if is_instance_valid(corpo_toccato):
+			# Controlliamo se l'oggetto che abbiamo toccato è sul layer degli ostacoli (Layer 2)
+			if corpo_toccato.get_collision_layer_value(1): # Controlla se il bit del layer 2 è attivo
+				print(\"Pesce ha colpito un ostacolo! Scomparendo...\")
+				# Mettiamo il pesce in coda per essere eliminato in sicurezza
+				queue_free()
 	move_and_slide()
 "
 

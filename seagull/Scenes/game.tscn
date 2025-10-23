@@ -60,15 +60,15 @@ barca = NodePath("../Barca")
 position = Vector2(-142, 5462)
 shallow_depth_threshold = 2500.0
 
-[node name="StaticBody2D" type="StaticBody2D" parent="."]
-position = Vector2(0, -1)
+[node name="confini_mondo" type="StaticBody2D" parent="."]
+position = Vector2(6, -1)
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D"]
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="confini_mondo"]
 position = Vector2(0, 1)
 build_mode = 1
 polygon = PackedVector2Array(-9602, 8005.78, 9546, 8005.78, 9546, -1461, -9602, -1461)
 
-[node name="Camera2D" type="Camera2D" parent="StaticBody2D"]
+[node name="Camera2D_non_attiva" type="Camera2D" parent="confini_mondo"]
 
 [node name="Freccia" parent="." node_paths=PackedStringArray("target") instance=ExtResource("5_i6g32")]
 position = Vector2(0, -1)

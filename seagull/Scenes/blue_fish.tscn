@@ -4,3 +4,4 @@
 
 [node name="blue_fish" groups=["pesci"] instance=ExtResource("1_4tfwd")]
 fish_animation_name = &"blue"
+score = 10.0
