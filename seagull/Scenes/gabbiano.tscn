@@ -1,9 +1,11 @@
-[gd_scene load_steps=22 format=3 uid="uid://qb15gema81q"]
+[gd_scene load_steps=24 format=3 uid="uid://qb15gema81q"]
 
 [ext_resource type="Script" uid="uid://cvf83v80ux8et" path="res://Scripts/gabbiano.gd" id="1_7dw06"]
 [ext_resource type="Texture2D" uid="uid://2vcss58qk416" path="res://Assets/images/Spreadsheet gabbiano.png" id="2_cnhjg"]
 [ext_resource type="Texture2D" uid="uid://dmpgy2tkcxjxn" path="res://Assets/images/Spreadsheet gabbiano v2.png" id="2_lbfth"]
 [ext_resource type="Script" uid="uid://pd2qtvm02l7y" path="res://Scripts/text.gd" id="4_3ngxi"]
+[ext_resource type="Texture2D" uid="uid://bd316mqbhd8m4" path="res://Assets/images/bolle_under.png" id="5_020jv"]
+[ext_resource type="Texture2D" uid="uid://dq2oplge2nl15" path="res://Assets/images/bolle_progress.png" id="6_a16n5"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_o68jw"]
 atlas = ExtResource("2_lbfth")
@@ -188,7 +190,7 @@ limit_bottom = 8002
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 script = ExtResource("4_3ngxi")
 
-[node name="Label" type="Label" parent="CanvasLayer"]
+[node name="Score" type="Label" parent="CanvasLayer"]
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
@@ -198,3 +200,20 @@ offset_bottom = 152.0
 grow_horizontal = 2
 text = "SCORE: 0"
 label_settings = SubResource("LabelSettings_lbfth")
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="CanvasLayer"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -898.0
+offset_top = -175.0
+offset_right = 898.0
+grow_horizontal = 2
+grow_vertical = 0
+scale = Vector2(0.43, 0.43)
+pivot_offset = Vector2(898, 87.5)
+step = 5.0
+texture_under = ExtResource("5_020jv")
+texture_progress = ExtResource("6_a16n5")

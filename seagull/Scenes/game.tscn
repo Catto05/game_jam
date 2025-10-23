@@ -1,6 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://bgwyw6ap70v1w"]
+[gd_scene load_steps=8 format=3 uid="uid://bgwyw6ap70v1w"]
 
 [ext_resource type="PackedScene" uid="uid://b0c04gjt1wuv6" path="res://Scenes/barca.tscn" id="1_ebmjs"]
+[ext_resource type="PackedScene" uid="uid://dymgn37huda26" path="res://Scenes/checkpoint.tscn" id="2_i6g32"]
 [ext_resource type="PackedScene" uid="uid://bdqfwxlgoh56w" path="res://Scenes/zona_acqua.tscn" id="2_qxrlw"]
 [ext_resource type="PackedScene" uid="uid://qb15gema81q" path="res://Scenes/gabbiano.tscn" id="3_wrm1d"]
 [ext_resource type="PackedScene" uid="uid://dqsf7ahib18cp" path="res://Scenes/indicatore_barca.tscn" id="5_i6g32"]
@@ -49,6 +50,9 @@ mass = 0.66
 position = Vector2(-1203, -1104)
 rect = Rect2(-10.68, -10, 2366.63, 1119.18)
 
+[node name="checkpoint" parent="." instance=ExtResource("2_i6g32")]
+position = Vector2(468, 60)
+
 [node name="Zona_acqua" parent="." instance=ExtResource("2_qxrlw")]
 position = Vector2(0, 56)
 
@@ -64,7 +68,7 @@ shallow_depth_threshold = 2500.0
 position = Vector2(6, -1)
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="confini_mondo"]
-position = Vector2(0, 1)
+position = Vector2(-44, 1)
 build_mode = 1
 polygon = PackedVector2Array(-9602, 8005.78, 9546, 8005.78, 9546, -1461, -9602, -1461)
 
@@ -75,6 +79,8 @@ position = Vector2(0, -1)
 target = NodePath("../Barca")
 margin = 60.0
 
+[connection signal="body_entered" from="checkpoint" to="gabbiano" method="_on_checkpoint_body_entered"]
+[connection signal="body_exited" from="checkpoint" to="gabbiano" method="_on_checkpoint_body_exited"]
 [connection signal="body_entered" from="Zona_acqua" to="Barca" method="_on_zona_acqua_body_entered"]
 [connection signal="body_entered" from="Zona_acqua" to="gabbiano" method="_on_zona_acqua_body_entered"]
 [connection signal="body_exited" from="Zona_acqua" to="gabbiano" method="_on_zona_acqua_body_exited"]

@@ -4,6 +4,7 @@ extends CharacterBody2D
 @onready var gabbiano: CharacterBody2D = $"."
 @onready var camera_2d: Camera2D = $Camera2D
 @export var barca : Node2D = null
+@onready var progress_bar: TextureProgressBar = $CanvasLayer/TextureProgressBar
 
 
 
@@ -14,9 +15,18 @@ var is_player_controlled
 var last_direction_y
 var last_directions = Vector2()
 var is_in_water = false	
+var is_in_checkpoint = false
+var oxygen_seconds_left:float = 20:
+	set(new_oxygen):
+		if new_oxygen < 0:
+			oxygen_seconds_left = 0
+		elif new_oxygen > 20:
+			oxygen_seconds_left = 20
+		else:
+			oxygen_seconds_left = new_oxygen
 
 func _physics_process(delta: float) -> void:
-		
+	
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	var direction_x:= Input.get_axis("ui_left", "ui_right")
@@ -55,12 +65,20 @@ func _physics_process(delta: float) -> void:
 			animated_sprite_2d.play("down (right side)")
 			
 	else:
+		
 		if is_in_water == false:
 			velocity.x = move_toward(velocity.x, get_gravity().x, SPEED * delta)
 			velocity.y = move_toward(velocity.y, get_gravity().y, SPEED * delta)
+			
 		else:
 			velocity.x = move_toward(velocity.x, 0, SPEED * delta)
 			velocity.y = move_toward(velocity.y, 0, SPEED * delta)
+			
+	if is_in_water:
+		oxygen_seconds_left -= delta
+	else:
+		oxygen_seconds_left += delta * 7
+	progress_bar.value = (oxygen_seconds_left* 100) / 20
 		
 	# Handle jump.
 	if Input.is_action_just_pressed("ui_accept"):
@@ -84,11 +102,17 @@ func _physics_process(delta: float) -> void:
 				# Alziamo la "bandierina" per non colpirlo più
 				corpo_toccato.is_eaten = true 
 				print("Ho mangiato il pesce: ", corpo_toccato.name)
-				print("")
-				ScoreManager.total_score += corpo_toccato.score
+				ScoreManager.score += corpo_toccato.score
 				corpo_toccato.queue_free()
 				
+	if is_in_checkpoint:
+		ScoreManager.total_score += ScoreManager.potential_score
+		ScoreManager.potential_score
+		print(ScoreManager.total_score)
+		is_in_checkpoint = false
+				
 	move_and_slide()
+
 	
 	
 func _on_zona_acqua_body_entered(body: Node2D) -> void:
@@ -101,3 +125,17 @@ func _on_zona_acqua_body_exited(body: Node2D) -> void:
 	if body.is_in_group("Gabbiano"):
 		is_in_water = false
 		print("not in water")
+
+
+
+func _on_checkpoint_body_entered(body: Node2D) -> void:
+	if body.is_in_group("Gabbiano"):
+		is_in_checkpoint = true
+		print("checkpoint")
+
+
+func _on_checkpoint_body_exited(body: Node2D) -> void:
+	if body.is_in_group("Gabbiano"):
+		is_in_checkpoint = false
+		print("not checkpoint")
+		
