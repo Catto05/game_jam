@@ -6,28 +6,26 @@
 [ext_resource type="PackedScene" uid="uid://qb15gema81q" path="res://Scenes/gabbiano.tscn" id="3_wrm1d"]
 [ext_resource type="PackedScene" uid="uid://dqsf7ahib18cp" path="res://Scenes/indicatore_barca.tscn" id="5_i6g32"]
 [ext_resource type="PackedScene" uid="uid://dh8s7g84fofw7" path="res://Scenes/spawner_pesci.tscn" id="6_1l0tm"]
-[ext_resource type="Script" uid="uid://c2ypjmx33se5s" path="res://Scripts/game_over_screen.gd" id="8_ldgsr"]
-[ext_resource type="Texture2D" uid="uid://dhmwjr5mfldno" path="res://Assets/images/Untitled.png" id="9_o5yvi"]
+[ext_resource type="PackedScene" uid="uid://dbcc8mai316p0" path="res://Scenes/game_over_screen.tscn" id="7_v158k"]
+[ext_resource type="PackedScene" uid="uid://bo1p1qtb0edis" path="res://Scenes/menu.tscn" id="9_h4fw4"]
 
 [sub_resource type="GDScript" id="GDScript_i6g32"]
 script/source = "# Nello script del nodo principale (Mondo.gd)
 extends Node2D
-
-# Trascina i tuoi due personaggi qui dall'editor di Godot
 @onready var gabbiano: CharacterBody2D = $gabbiano
 @onready var gradiente_acqua: GradientTexture1D = preload(\"res://Assets/new_gradient_texture_1d.tres\")
 @onready var zona_acqua: Area2D = $Zona_acqua
 
 # Una variabile per sapere chi stiamo controllando al momento
 var personaggio_attivo: CharacterBody2D
-
+var menu_state
 func _ready():
-	# All'inizio del gioco, decidiamo chi parte come attivo
-	# Diamo il controllo al personaggio 1
-
-	# Potresti voler muovere la camera sul personaggio attivo
-	# $Camera2D.target_node = personaggio_attivo (se la camera è figlia di Mondo)
-	pass
+# --- NUOVO CODICE ---
+	# All'avvio della scena, resettiamo il colore dell'acqua al suo valore di superficie (offset 0).
+	# Questo corregge il problema del riavvio.
+	# GIUSTO
+	var initial_color = gradiente_acqua.gradient.sample(0) # Campiona il colore all'inizio del gradiente
+	((zona_acqua.color_rect as ColorRect).material as ShaderMaterial).set_shader_parameter(\"water_color\", initial_color)
 
 func _physics_process(delta: float) -> void:
 	if gabbiano.is_in_water:
@@ -35,6 +33,8 @@ func _physics_process(delta: float) -> void:
 		offset = offset/ zona_acqua.color_rect.size.y
 		var color = gradiente_acqua.gradient.sample(offset)
 		((zona_acqua.color_rect as ColorRect).material as ShaderMaterial).set_shader_parameter(\"water_color\", color)
+	
+		
 		
 "
 
@@ -51,9 +51,11 @@ rect = Rect2(-10.68, -10, 2366.63, 1119.18)
 
 [node name="checkpoint" parent="." instance=ExtResource("2_i6g32")]
 position = Vector2(468, 60)
+collision_mask = 2
 
 [node name="Zona_acqua" parent="." instance=ExtResource("2_qxrlw")]
 position = Vector2(0, 56)
+collision_mask = 2
 
 [node name="gabbiano" parent="." node_paths=PackedStringArray("barca") groups=["Gabbiano"] instance=ExtResource("3_wrm1d")]
 position = Vector2(-1869, -1115)
@@ -78,36 +80,11 @@ position = Vector2(0, -1)
 target = NodePath("../Barca")
 margin = 60.0
 
-[node name="GameOverScreen" type="CanvasLayer" parent="."]
-script = ExtResource("8_ldgsr")
+[node name="GameOverScreen" parent="." instance=ExtResource("7_v158k")]
+visible = false
 
-[node name="TextureRect" type="TextureRect" parent="GameOverScreen"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 3.0
-offset_top = 0.99998474
-offset_right = 643.0
-offset_bottom = 361.0
-grow_horizontal = 2
-grow_vertical = 2
-scale = Vector2(0.665, 0.665)
-texture = ExtResource("9_o5yvi")
-
-[node name="Button" type="Button" parent="GameOverScreen"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -22.5
-offset_top = -19.0
-offset_right = 22.5
-offset_bottom = 19.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_vertical = 4
-text = "PLAY AGAIN"
+[node name="menu" parent="." instance=ExtResource("9_h4fw4")]
+visible = false
 
 [connection signal="body_entered" from="checkpoint" to="gabbiano" method="_on_checkpoint_body_entered"]
 [connection signal="body_exited" from="checkpoint" to="gabbiano" method="_on_checkpoint_body_exited"]

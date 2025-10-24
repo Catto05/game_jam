@@ -15,17 +15,16 @@ var is_player_controlled
 var last_direction_y
 var last_directions = Vector2()
 var is_in_water = false	
-var oxygen_seconds_left:float = 20:
+var oxygen_seconds_left:float = 25:
 	set(new_oxygen):
 		if new_oxygen < 0:
 			oxygen_seconds_left = 0
-		elif new_oxygen > 20:
-			oxygen_seconds_left = 20
+		elif new_oxygen > 25:
+			oxygen_seconds_left = 25
 		else:
 			oxygen_seconds_left = new_oxygen
 var is_dead:bool
-func _ready() -> void:
-	progress_bar.value = 100
+
 func _physics_process(delta: float) -> void:
 	if GameManager.current_state != GameManager.State.PLAYING:
 		return
@@ -92,14 +91,14 @@ func progress_bar_func(delta):
 	if is_in_water:
 		oxygen_seconds_left -= delta
 	else:
-		oxygen_seconds_left += delta * 7
-	progress_bar.value = (oxygen_seconds_left* 100) / 20
+		oxygen_seconds_left += delta * 3
+	progress_bar.value = (oxygen_seconds_left* 100) / 25
 func collisions():
 		for i in get_slide_collision_count():
 			var collision = get_slide_collision(i)
 			var corpo_toccato = collision.get_collider()
 			# Controlliamo che il corpo esista e sia un pesce
-			if corpo_toccato and corpo_toccato.is_in_group("pesci"):
+			if corpo_toccato and corpo_toccato.get_collision_layer_value(3): # Layer 3 è "pesci":
 				# ==> LA CONDIZIONE CHIAVE: il pesce non è già stato mangiato?
 				if not corpo_toccato.is_eaten:
 					# Alziamo la "bandierina" per non colpirlo più

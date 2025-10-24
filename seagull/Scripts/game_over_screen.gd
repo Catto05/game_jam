@@ -4,12 +4,10 @@ extends CanvasLayer
 @onready var replay_button: Button = $Button # Assicurati che il nome del nodo sia Button
 
 func _ready():
-	GameManager.game_over_screen = self
 	# Nascondiamo la schermata all'inizio
 	hide()
 	# Colleghiamo il segnale del pulsante alla nostra funzione
-	replay_button.pressed.connect(on_replay_button_pressed)
+	replay_button.pressed.connect(_on_replay_button_pressed)
 
-func on_replay_button_pressed():
-	# Quando il pulsante viene premuto, diciamo al regista di riavviare il gioco
+func _on_replay_button_pressed() -> void:
 	GameManager.restart_game()

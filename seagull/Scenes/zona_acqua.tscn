@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://bdqfwxlgoh56w"]
 
-[ext_resource type="Script" uid="uid://bcclbvr161wsp" path="res://Scripts/zona_acqua.gd" id="1_8subu"]
+[ext_resource type="Script" path="res://Scripts/zona_acqua.gd" id="1_8subu"]
 [ext_resource type="Shader" uid="uid://cq5g225sqiccj" path="res://Scripts/mare.gdshader" id="1_81842"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sbm0e"]

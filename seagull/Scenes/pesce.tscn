@@ -60,7 +60,11 @@ func _physics_process(delta: float):
 			if corpo_toccato.get_collision_layer_value(1): # Controlla se il bit del layer 2 è attivo
 				print(\"Pesce ha colpito un ostacolo! Scomparendo...\")
 				# Mettiamo il pesce in coda per essere eliminato in sicurezza
-				queue_free()
+			if corpo_toccato.get_collision_layer_value(2):
+				if not is_eaten:
+					is_eaten = true
+					ScoreManager.add_partial_score(score)
+			queue_free()
 	move_and_slide()
 "
 
@@ -173,6 +177,8 @@ animations = [{
 
 [node name="pesce" type="CharacterBody2D"]
 scale = Vector2(0.2, 0.2)
+collision_layer = 4
+collision_mask = 5
 script = SubResource("GDScript_0sfw5")
 speed = 200.0
 
