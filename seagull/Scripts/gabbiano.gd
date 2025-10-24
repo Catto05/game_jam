@@ -24,7 +24,8 @@ var oxygen_seconds_left:float = 20:
 		else:
 			oxygen_seconds_left = new_oxygen
 var is_dead:bool
-
+func _ready() -> void:
+	progress_bar.value = 100
 func _physics_process(delta: float) -> void:
 	if GameManager.current_state != GameManager.State.PLAYING:
 		return

@@ -4,6 +4,7 @@ extends CanvasLayer
 @onready var replay_button: Button = $Button # Assicurati che il nome del nodo sia Button
 
 func _ready():
+	GameManager.game_over_screen = self
 	# Nascondiamo la schermata all'inizio
 	hide()
 	# Colleghiamo il segnale del pulsante alla nostra funzione

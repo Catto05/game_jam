@@ -16,12 +16,14 @@ func end_game():
 		print("GAME OVER!")
 		current_state = State.GAME_OVER
 		# Mostra la schermata di game over
-		game_over_screen.show()
+		if game_over_screen:
+			game_over_screen.show()
 		# Mette in pausa il gioco (tutto si ferma)
 		get_tree().paused = true
 
 # Funzione chiamata dal pulsante "Replay"
 func restart_game():
+	print("miao")
 	# Togliamo la pausa prima di ricaricare
 	get_tree().paused = false
 	# Il modo più semplice per resettare TUTTO è ricaricare la scena attuale
