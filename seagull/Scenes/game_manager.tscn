@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://cfs05u5hahaly"]
+
+[ext_resource type="Script" uid="uid://ibmhs1b05n0t" path="res://Scripts/game_manager.gd" id="1_oj352"]
+
+[node name="game_manager" type="Node" node_paths=PackedStringArray("game_over_screen")]
+script = ExtResource("1_oj352")
+game_over_screen = NodePath("")

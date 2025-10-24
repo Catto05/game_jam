@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://qb15gema81q"]
+[gd_scene load_steps=25 format=3 uid="uid://qb15gema81q"]
 
 [ext_resource type="Script" uid="uid://cvf83v80ux8et" path="res://Scripts/gabbiano.gd" id="1_7dw06"]
 [ext_resource type="Texture2D" uid="uid://2vcss58qk416" path="res://Assets/images/Spreadsheet gabbiano.png" id="2_cnhjg"]
@@ -162,7 +162,10 @@ animations = [{
 size = Vector2(261, 143.625)
 
 [sub_resource type="LabelSettings" id="LabelSettings_lbfth"]
-font_size = 111
+font_size = 80
+
+[sub_resource type="LabelSettings" id="LabelSettings_020jv"]
+font_size = 26
 
 [node name="gabbiano" type="CharacterBody2D"]
 script = ExtResource("1_7dw06")
@@ -194,9 +197,9 @@ script = ExtResource("4_3ngxi")
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -237.0
-offset_right = 237.0
-offset_bottom = 152.0
+offset_left = -170.5
+offset_right = 170.5
+offset_bottom = 110.0
 grow_horizontal = 2
 text = "SCORE: 0"
 label_settings = SubResource("LabelSettings_lbfth")
@@ -217,3 +220,12 @@ pivot_offset = Vector2(898, 87.5)
 step = 5.0
 texture_under = ExtResource("5_020jv")
 texture_progress = ExtResource("6_a16n5")
+
+[node name="Partial_score" type="Label" parent="CanvasLayer"]
+offset_left = 537.0
+offset_top = 100.0
+offset_right = 757.0
+offset_bottom = 136.0
+size_flags_horizontal = 4
+text = "PARTIAL SCORE:"
+label_settings = SubResource("LabelSettings_020jv")

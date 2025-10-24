@@ -15,7 +15,6 @@ var is_player_controlled
 var last_direction_y
 var last_directions = Vector2()
 var is_in_water = false	
-var is_in_checkpoint = false
 var oxygen_seconds_left:float = 20:
 	set(new_oxygen):
 		if new_oxygen < 0:
@@ -24,11 +23,26 @@ var oxygen_seconds_left:float = 20:
 			oxygen_seconds_left = 20
 		else:
 			oxygen_seconds_left = new_oxygen
+var is_dead:bool
 
 func _physics_process(delta: float) -> void:
-	
-	# Get the input direction and handle the movement/deceleration.
-	# As good practice, you should replace UI actions with custom gameplay actions.
+	if GameManager.current_state != GameManager.State.PLAYING:
+		return
+	movements(delta)
+	progress_bar_func(delta)
+	jump_boost()
+	collisions()
+	if check_oxygen():
+		GameManager.end_game()
+	move_and_slide()
+
+func check_oxygen():
+	if oxygen_seconds_left == 0.0:
+		is_dead = true
+	else:
+		is_dead = false
+	return is_dead
+func movements(delta):
 	var direction_x:= Input.get_axis("ui_left", "ui_right")
 	var direction_y := Input.get_axis("ui_up", "ui_down")
 	if(direction_x != 0):
@@ -73,69 +87,45 @@ func _physics_process(delta: float) -> void:
 		else:
 			velocity.x = move_toward(velocity.x, 0, SPEED * delta)
 			velocity.y = move_toward(velocity.y, 0, SPEED * delta)
-			
+func progress_bar_func(delta):
 	if is_in_water:
 		oxygen_seconds_left -= delta
 	else:
 		oxygen_seconds_left += delta * 7
 	progress_bar.value = (oxygen_seconds_left* 100) / 20
-		
-	# Handle jump.
+func collisions():
+		for i in get_slide_collision_count():
+			var collision = get_slide_collision(i)
+			var corpo_toccato = collision.get_collider()
+			# Controlliamo che il corpo esista e sia un pesce
+			if corpo_toccato and corpo_toccato.is_in_group("pesci"):
+				# ==> LA CONDIZIONE CHIAVE: il pesce non è già stato mangiato?
+				if not corpo_toccato.is_eaten:
+					# Alziamo la "bandierina" per non colpirlo più
+					corpo_toccato.is_eaten = true 
+					print("Ho mangiato il pesce: ", corpo_toccato.name)
+					ScoreManager.add_partial_score(corpo_toccato.score)
+					print(ScoreManager.partial_score)
+					corpo_toccato.queue_free()
+func _on_zona_acqua_body_entered(body: Node2D) -> void:
+	if body.is_in_group("Gabbiano"):
+		is_in_water = true
+		print("in water")
+func jump_boost():
 	if Input.is_action_just_pressed("ui_accept"):
 		velocity.y = JUMP_VELOCITY
 		if last_directions.x == 1 and last_directions.y == -1 :
 			animated_sprite_2d.play("up-right")
 		elif last_directions.x == -1 and last_directions.y == -1:
 			animated_sprite_2d.play("up-left")
-			
-	
-	
-	for i in get_slide_collision_count():
-		var collision = get_slide_collision(i)
-		var corpo_toccato = collision.get_collider()
-
-		# Controlliamo che il corpo esista e sia un pesce
-		if corpo_toccato and corpo_toccato.is_in_group("pesci"):
-			
-			# ==> LA CONDIZIONE CHIAVE: il pesce non è già stato mangiato?
-			if not corpo_toccato.is_eaten:
-				# Alziamo la "bandierina" per non colpirlo più
-				corpo_toccato.is_eaten = true 
-				print("Ho mangiato il pesce: ", corpo_toccato.name)
-				ScoreManager.score += corpo_toccato.score
-				corpo_toccato.queue_free()
-				
-	if is_in_checkpoint:
-		ScoreManager.total_score += ScoreManager.potential_score
-		ScoreManager.potential_score
-		print(ScoreManager.total_score)
-		is_in_checkpoint = false
-				
-	move_and_slide()
-
-	
-	
-func _on_zona_acqua_body_entered(body: Node2D) -> void:
-	if body.is_in_group("Gabbiano"):
-		is_in_water = true
-		print("in water")
-
-
 func _on_zona_acqua_body_exited(body: Node2D) -> void:
 	if body.is_in_group("Gabbiano"):
 		is_in_water = false
 		print("not in water")
-
-
-
 func _on_checkpoint_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Gabbiano"):
-		is_in_checkpoint = true
+		ScoreManager.bank_partial_score()
 		print("checkpoint")
-
-
 func _on_checkpoint_body_exited(body: Node2D) -> void:
 	if body.is_in_group("Gabbiano"):
-		is_in_checkpoint = false
 		print("not checkpoint")
-		
