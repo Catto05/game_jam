@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://ce5fi30vxbihp"
+path="res://.godot/imported/splash-small-rock-thrown-in-water-mechanical-wave-14-00-01 (1).mp3-23702baf504764a5e96347a6d6c0ddc7.mp3str"
+
+[deps]
+
+source_file="res://Assets/Sounds/splash-small-rock-thrown-in-water-mechanical-wave-14-00-01 (1).mp3"
+dest_files=["res://.godot/imported/splash-small-rock-thrown-in-water-mechanical-wave-14-00-01 (1).mp3-23702baf504764a5e96347a6d6c0ddc7.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

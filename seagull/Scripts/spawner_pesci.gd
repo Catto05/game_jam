@@ -38,10 +38,10 @@ func _on_timer_timeout():
 		size_vector = Vector2(0.2,0.2)
 		multiplier = 1
 	elif random_choice_size < small_fish + medium_fish:
-		size_vector = Vector2(0.3,0.3)
+		size_vector = Vector2(0.28,0.28)
 		multiplier = 1.5
 	else:
-		size_vector = Vector2(0.4,0.4)
+		size_vector = Vector2(0.35,0.35)
 		multiplier = 2
 	
 	

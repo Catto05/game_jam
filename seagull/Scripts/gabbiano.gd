@@ -24,7 +24,8 @@ var oxygen_seconds_left:float = 25:
 		else:
 			oxygen_seconds_left = new_oxygen
 var is_dead:bool
-
+var has_played_full_oxygen_sound = false
+var has_played_empty_oxygen_sound = false
 func _physics_process(delta: float) -> void:
 	if GameManager.current_state != GameManager.State.PLAYING:
 		return
@@ -93,6 +94,18 @@ func progress_bar_func(delta):
 	else:
 		oxygen_seconds_left += delta * 3
 	progress_bar.value = (oxygen_seconds_left* 100) / 25
+	
+	if oxygen_seconds_left == 25 and not has_played_full_oxygen_sound:
+		SoundManager.play_sfx("oxygen_full")
+		has_played_full_oxygen_sound = true
+	elif oxygen_seconds_left < 25:
+		has_played_full_oxygen_sound = false
+		
+	if oxygen_seconds_left < 5 and not has_played_empty_oxygen_sound:
+		SoundManager.play_sfx("oxygen_empty")
+		has_played_empty_oxygen_sound = true
+	elif oxygen_seconds_left > 5:
+		has_played_empty_oxygen_sound = false
 func collisions():
 		for i in get_slide_collision_count():
 			var collision = get_slide_collision(i)
@@ -105,11 +118,13 @@ func collisions():
 					corpo_toccato.is_eaten = true 
 					print("Ho mangiato il pesce: ", corpo_toccato.name)
 					ScoreManager.add_partial_score(corpo_toccato.score)
+					SoundManager.play_sfx("eat")
 					print(ScoreManager.partial_score)
 					corpo_toccato.queue_free()
 func _on_zona_acqua_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Gabbiano"):
 		is_in_water = true
+		SoundManager.play_sfx("jump_in")
 		print("in water")
 func jump_boost():
 	if Input.is_action_just_pressed("ui_accept"):
@@ -121,6 +136,7 @@ func jump_boost():
 func _on_zona_acqua_body_exited(body: Node2D) -> void:
 	if body.is_in_group("Gabbiano"):
 		is_in_water = false
+		SoundManager.play_sfx("jump_out")
 		print("not in water")
 func _on_checkpoint_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Gabbiano"):

@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://cwfwhtlur2m7q"]
+
+[ext_resource type="Script" uid="uid://di3xgagoomc3p" path="res://Scripts/sound_manager.gd" id="1_32i44"]
+[ext_resource type="AudioStream" uid="uid://c3e05hh11ktwh" path="res://Assets/Sounds/sottofondo.mp3" id="2_25ke0"]
+
+[node name="SoundManager" type="Node"]
+script = ExtResource("1_32i44")
+
+[node name="music_player" type="AudioStreamPlayer2D" parent="."]
+position = Vector2(-2, 0)
+stream = ExtResource("2_25ke0")
+volume_db = 24.0
+max_distance = 4096.0
+parameters/looping = true

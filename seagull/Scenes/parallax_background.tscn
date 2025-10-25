@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://5eqviux5o8mq"]
+
+[ext_resource type="Texture2D" uid="uid://dwwrjnfcjeaji" path="res://Assets/images/sky.png" id="1_0fo66"]
+[ext_resource type="Script" uid="uid://cnmdjwc4x4fv4" path="res://Scripts/parallax_background.gd" id="1_cthwu"]
+
+[node name="ParallaxBackground" type="ParallaxBackground"]
+script = ExtResource("1_cthwu")
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="."]
+motion_scale = Vector2(0.2, 0.2)
+
+[node name="TextureRect" type="TextureRect" parent="ParallaxLayer"]
+offset_left = -11106.0
+offset_top = -1440.0
+offset_right = -7113.1113
+offset_bottom = -555.77783
+scale = Vector2(5.56, 5.56)
+texture = ExtResource("1_0fo66")
+expand_mode = 2
+stretch_mode = 1

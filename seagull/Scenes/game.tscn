@@ -1,6 +1,7 @@
-[gd_scene load_steps=10 format=3 uid="uid://bgwyw6ap70v1w"]
+[gd_scene load_steps=12 format=3 uid="uid://bgwyw6ap70v1w"]
 
 [ext_resource type="PackedScene" uid="uid://b0c04gjt1wuv6" path="res://Scenes/barca.tscn" id="1_ebmjs"]
+[ext_resource type="PackedScene" uid="uid://5eqviux5o8mq" path="res://Scenes/parallax_background.tscn" id="1_ldgsr"]
 [ext_resource type="PackedScene" uid="uid://dymgn37huda26" path="res://Scenes/checkpoint.tscn" id="2_i6g32"]
 [ext_resource type="PackedScene" uid="uid://bdqfwxlgoh56w" path="res://Scenes/zona_acqua.tscn" id="2_qxrlw"]
 [ext_resource type="PackedScene" uid="uid://qb15gema81q" path="res://Scenes/gabbiano.tscn" id="3_wrm1d"]
@@ -8,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://dh8s7g84fofw7" path="res://Scenes/spawner_pesci.tscn" id="6_1l0tm"]
 [ext_resource type="PackedScene" uid="uid://dbcc8mai316p0" path="res://Scenes/game_over_screen.tscn" id="7_v158k"]
 [ext_resource type="PackedScene" uid="uid://bo1p1qtb0edis" path="res://Scenes/menu.tscn" id="9_h4fw4"]
+[ext_resource type="PackedScene" uid="uid://cwfwhtlur2m7q" path="res://Scenes/sound_manager.tscn" id="9_ldgsr"]
 
 [sub_resource type="GDScript" id="GDScript_i6g32"]
 script/source = "# Nello script del nodo principale (Mondo.gd)
@@ -24,6 +26,7 @@ func _ready():
 	# All'avvio della scena, resettiamo il colore dell'acqua al suo valore di superficie (offset 0).
 	# Questo corregge il problema del riavvio.
 	# GIUSTO
+	SoundManager.play_music(\"res://Assets/Sounds/sottofondo.mp3\")
 	var initial_color = gradiente_acqua.gradient.sample(0) # Campiona il colore all'inizio del gradiente
 	((zona_acqua.color_rect as ColorRect).material as ShaderMaterial).set_shader_parameter(\"water_color\", initial_color)
 
@@ -40,6 +43,8 @@ func _physics_process(delta: float) -> void:
 
 [node name="Game" type="Node2D"]
 script = SubResource("GDScript_i6g32")
+
+[node name="ParallaxBackground" parent="." instance=ExtResource("1_ldgsr")]
 
 [node name="Barca" parent="." instance=ExtResource("1_ebmjs")]
 position = Vector2(468, 60)
@@ -69,6 +74,7 @@ shallow_depth_threshold = 2500.0
 position = Vector2(6, -1)
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="confini_mondo"]
+texture_repeat = 2
 position = Vector2(-44, 1)
 build_mode = 1
 polygon = PackedVector2Array(-9602, 8005.78, 9546, 8005.78, 9546, -1461, -9602, -1461)
@@ -85,6 +91,8 @@ visible = false
 
 [node name="menu" parent="." instance=ExtResource("9_h4fw4")]
 visible = false
+
+[node name="SoundManager" parent="." instance=ExtResource("9_ldgsr")]
 
 [connection signal="body_entered" from="checkpoint" to="gabbiano" method="_on_checkpoint_body_entered"]
 [connection signal="body_exited" from="checkpoint" to="gabbiano" method="_on_checkpoint_body_exited"]

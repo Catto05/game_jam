@@ -1,10 +1,34 @@
-[gd_scene load_steps=2 format=3 uid="uid://dymgn37huda26"]
+[gd_scene load_steps=3 format=3 uid="uid://dymgn37huda26"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wowpa"]
 size = Vector2(1071, 492.5)
+
+[sub_resource type="LabelSettings" id="LabelSettings_jkya8"]
+font_size = 137
+font_color = Color(0, 0, 0, 1)
+shadow_size = 0
 
 [node name="checkpoint" type="Area2D"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-346.5, -661.25)
 shape = SubResource("RectangleShape2D_wowpa")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = -1
+follow_viewport_enabled = true
+
+[node name="Label" type="Label" parent="CanvasLayer"]
+anchors_preset = -1
+anchor_left = -0.277
+anchor_top = -1.0070001
+anchor_right = 0.395
+anchor_bottom = -0.731
+offset_left = 0.55999756
+offset_top = 11.040039
+offset_right = -0.6000061
+offset_bottom = 0.32000732
+grow_horizontal = 0
+grow_vertical = 2
+text = "CHECKPOINT"
+label_settings = SubResource("LabelSettings_jkya8")
